@@ -5,6 +5,10 @@ export default function DashBoardLayout({ children}) {
   return (
     <div>
       <Header />
-      {children}</div>
+      <div className='mx-5 lg:mx-36'>
+      {children}
+
+      </div>
+      </div>
   )
 }
