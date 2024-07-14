@@ -50,12 +50,8 @@ function Recording({ interviewQuestions, ActiveQuestion, indata }) {
 
   const updateUserResults = async () => {
     console.log(Userresults);
-
     setLoading(true);
-
     try {
-      
-
       const FeedbackPromt = `Question: ${ActiveQuestion}, user Answer: ${Userresults}, Review and just give Feedback give user rating and scope of improvement in 3-5 lines in JSON format with rating and scope of improvement. Don’t give **Explanations**.`;
       const result = await chatSession.sendMessage(FeedbackPromt);
 
