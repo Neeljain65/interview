@@ -3,6 +3,7 @@ import { Lightbulb, Volume } from 'lucide-react'
 import React, { useState } from 'react'
 
 function Question({ interviewQuestions, ActiveQuestion }) {
+
   const texttoSpeak = (text) => {
     if ('speechSynthesis' in window) {
       let msg = new SpeechSynthesisUtterance();

@@ -37,7 +37,12 @@ function AddNewInterview() {
 
     try {
       console.log(jobPosition, jobDesc, jobExperience);
-      const InputPromt = `Job Position: ${jobPosition}, Job Description: ${jobDesc}, Years of Experience: ${jobExperience}. Depends on this information, please give me 5 interview questions with answers in JSON format. Give questions and answers in JSON fields. Don't send the **Note** section, just the questions and answers.`;
+      const InputPromt = `Job Position: ${jobPosition}, Job Description: ${jobDesc}, Years of Experience: ${jobExperience}. Depends on this information, please give me 5 interview questions with answers in JSON format. Give questions and answers in JSON fields. Don't send the **Note** section, just the questions and answers.[
+  {
+    "question":,
+    "answer": 
+    } Send in this format only
+]`;
       
       const result = await chatSession.sendMessage(InputPromt);
       let res = await result.response.text();
