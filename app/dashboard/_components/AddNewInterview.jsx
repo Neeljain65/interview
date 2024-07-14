@@ -75,6 +75,7 @@ function AddNewInterview() {
       <div className='p-10 border rounded-lg bg-secondary hover:scale-105 hover:shadow-md cursor-pointer transition-all' onClick={() => setIsOpen(true)}>
         <h2 className='font-bold text-lg text-center'>+ Add New</h2>
       </div>
+    
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>

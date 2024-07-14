@@ -58,6 +58,16 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        "background-position-spin": {
+          "0%": { backgroundPosition: "top center" },
+          "100%": { backgroundPosition: "bottom center" },
+        },
+
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -66,8 +76,13 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        
       },
       animation: {
+        backgroundPositionSpin:
+        "background-position-spin 3000ms infinite alternate",
+    
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },

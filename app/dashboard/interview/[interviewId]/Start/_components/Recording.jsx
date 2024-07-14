@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { WebcamIcon } from 'lucide-react'
+import { CloudLightning, WebcamIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import Webcam from 'react-webcam'
 import useSpeechToText from 'react-hook-speech-to-text';
@@ -49,9 +49,18 @@ function Recording({ interviewQuestions, ActiveQuestion, indata }) {
   }
 
   const updateUserResults = async () => {
+
+const userID=indata?.mockId;
+
     console.log(Userresults);
     setLoading(true);
     try {
+  //     const exist=await db.select().from(UserAnswer).where(and(eq(UserAnswer.mockIdRef,indata?.mockId),eq(UserAnswer.question,interviewQuestions[ActiveQuestion]?.question))).orderBy(UserAnswer.id);
+  //  console.log(exist);
+  //  if(exist){
+  //   toast.error('You have already answered this question');
+  //   return;
+  //  }
       const FeedbackPromt = `Question: ${ActiveQuestion}, user Answer: ${Userresults}, Review and just give Feedback give user rating and scope of improvement in 3-5 lines in JSON format with rating and scope of improvement. Don’t give **Explanations**.`;
       const result = await chatSession.sendMessage(FeedbackPromt);
 
@@ -59,23 +68,23 @@ function Recording({ interviewQuestions, ActiveQuestion, indata }) {
       console.log(MockResp);
 
       const jsonMockResp = JSON.parse(MockResp);
-      console.log(interviewQuestions[ActiveQuestion]?.correctAns);
+      
+      const response = await db.insert(UserAnswer).values({
+        mockIdRef: indata?.mockId,
+         uidd:indata?.mockId,
+        question: interviewQuestions[ActiveQuestion]?.question,
+        correctAns: interviewQuestions[ActiveQuestion]?.correctAns,
+        userAns: Userresults,
+        feedback: jsonMockResp.scope_of_improvement,
+        rating: jsonMockResp.rating,
+        userEmail: user?.primaryEmailAddress?.emailAddress,
+        createdAt: moment().format('MMMM-Do-YYYY')
+      }).execute();
 
-      // const response = await db.insert(UserAnswer).values({
-      //   mockIdRef: indata?.mockId,
-      //   question: interviewQuestions[ActiveQuestion]?.question,
-      //   correctAns: interviewQuestions[ActiveQuestion]?.correctAns,
-      //   userAns: Userresults,
-      //   feedback: jsonMockResp.scope_of_improvement,
-      //   rating: jsonMockResp.rating,
-      //   userEmail: user?.primaryEmailAddress?.emailAddress,
-      //   createdAt: moment().format('MMMM-Do-YYYY')
-      // }).execute();
-
-      // if (response) {
-      //   toast.success('Answer Recorded Successfully');
-      //   setResults([]);
-      // }
+      if (response) {
+        toast.success('Answer Recorded Successfully');
+        setResults([]);
+      }
     } catch (error) {
       console.error('Error updating user results:', error);
       toast.error('An error occurred while recording your answer.');
