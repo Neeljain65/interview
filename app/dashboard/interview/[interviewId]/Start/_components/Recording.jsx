@@ -61,7 +61,7 @@ const userID=indata?.mockId;
   //   toast.error('You have already answered this question');
   //   return;
   //  }
-      const FeedbackPromt = `Question: ${ActiveQuestion}, user Answer: ${Userresults}, Review and just give Feedback give user rating and scope of improvement in 3-5 lines in JSON format with rating and scope of improvement. Don’t give **Explanations**.`;
+      const FeedbackPromt = `Question: ${ActiveQuestion}, user Answer: ${Userresults}, Review and just give Feedback give user rating out of 5 and scope of improvement in 3-5 lines in JSON format with rating and scope of improvement. Don’t give **Explanations**.`;
       const result = await chatSession.sendMessage(FeedbackPromt);
 
       const MockResp = (await result.response.text()).replace('```json', '').replace('```', '');
