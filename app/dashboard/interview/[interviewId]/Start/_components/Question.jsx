@@ -20,7 +20,7 @@ function Question({ interviewQuestions, ActiveQuestion }) {
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
           {interviewQuestions.map((ques, index) => (
             <h2
-              className={`bg-secondary text-center p-3 rounded-full cursor-pointer ${ActiveQuestion === index && 'bg-blue-950 text-white'}`}
+              className={` text-center p-3 rounded-full cursor-pointer ${ActiveQuestion === index && 'bg-blue-900 text-white'}`}
               key={index}
             >
               #question {index + 1}
@@ -38,7 +38,7 @@ function Question({ interviewQuestions, ActiveQuestion }) {
           <h2 className='flex'>
             <Lightbulb /><strong>Note:</strong>
           </h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque dignissimos est tempore earum numquam repellendus obcaecati illum totam nesciunt aperiam, aliquid unde delectus nihil voluptas. Impedit perferendis necessitatibus earum perspiciatis!</p>
+          <p>Read The question and Understand it completely whenever you are ready Press on Record Now button </p>
         </div>
       </div>
     )
