@@ -13,7 +13,7 @@ import Component from "./dashboard/_components/Footer";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex overflow-x-hidden flex-col min-h-screen">
       <Header />
       <div className="flex flex-col flex-grow w-screen p-5 justify-center items-center">
         <BoxReveal boxColor={"#5046e6"} duration={0.5}>

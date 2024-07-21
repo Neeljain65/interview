@@ -74,3 +74,15 @@
       @apply bg-background text-foreground;
     }
   }
+  
+  .bg-gold {
+    background-color: #ffd700;
+  }
+  
+  .bg-silver {
+    background-color: #c0c0c0;
+  }
+  
+  .bg-bronze {
+    background-color: #cd7f32;
+  }
