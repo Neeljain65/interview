@@ -6,6 +6,7 @@ jobPosition: varchar('jobPosition').notNull(),
 jobDesc: varchar('jobDesc').notNull(),
 jobExperience: varchar('jobExperience').notNull(),
 createdBy:varchar('createdBy').notNull(),
+createdByName:varchar('createdByName'),
 createdAt:varchar('createdAt'),
 mockId: varchar('mockId').notNull()})
 
