@@ -18,8 +18,7 @@ const path=usePathname();
           <Link href={"/dashboard"}>
           <li className={`hover:text-primary hover:font-bold ${path=='/dashboard' && 'font-bold' } `}>Dashboard</li>
           </Link>
-            <Link href={"/about"}>
-            <li className={`hover:text-primary hover:font-bold ${path=='/about' && 'font-bold' } `}>About</li></Link>
+            
             <Link href={"/leaderboard"}>
             <li className={`hover:text-primary hover:font-bold ${path=='/leaderboard' && 'font-bold' } `}>Ranking</li></Link>
            

@@ -3,13 +3,13 @@ import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "./dashboard/_components/Header";
+import Header from "../app/user/dashboard/_components/Header";
 import { cn } from "@/lib/utils";
 import AnimatedShinyText from "@/components/magicui/animated-shiny-text";
 import { ArrowRightIcon, Instagram } from "lucide-react";
 import NumberTicker from "@/components/magicui/number-ticker";
-import Features from "./dashboard/_components/Features";
-import Component from "./dashboard/_components/Footer";
+import Features from "../app/user/dashboard/_components/Features";
+import Component from "../app/user/dashboard/_components/Footer";
 
 export default function Home() {
   return (
@@ -51,12 +51,17 @@ export default function Home() {
             )}
           >
             <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
-              <Link href={"/dashboard"}>
-                <span>✨ Explore Now</span>
+              <Link href={"/company"}>
+                <span>Login As Company</span>
               </Link>
+              
               <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
             </AnimatedShinyText>
+            <Link href={"/user/dashboard"}>
+                <span>Login As Company</span>
+              </Link>
           </div>
+         
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

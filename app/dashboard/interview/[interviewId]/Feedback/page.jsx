@@ -45,7 +45,7 @@ const [averageRating, setAverageRating] = useState(0);
      <h1 className="text-2xl font-bold text-gray-800">Feedback</h1>
      <h2 className='font-semibold text-blue-500'>Here's Your Detailfeedback with Ai go through Question and Scope of Environment </h2>
      {averageRating==0?<></>:<>
-     <h2 className='text-2xl mt-3 font-semibold text-orange-300'>Your Average Rating:{averageRating}</h2>
+     <h2 className='text-2xl mt-3 font-semibold text-orange-300'>Your Average Rating:{averageRating.toFixed(2)}</h2>
      </>}
      {loading?<>
      
