@@ -37,7 +37,7 @@ function AddNewInterview() {
       console.log(jobPosition, jobDesc, jobExperience);
 
       // API call to FastAPI instead of Gemini
-      const response = await fetch("http://127.0.0.1:8000/get_questions", {
+      const response = await fetch("https://interview-g0pl.onrender.com/get_questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

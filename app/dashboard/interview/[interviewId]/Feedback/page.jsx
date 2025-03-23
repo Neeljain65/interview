@@ -42,7 +42,7 @@ function page({ params }) {
   
       for (const ques of unanswered) {
         try {
-          const response = await fetch("http://127.0.0.1:8000/generate_feedback", {
+          const response = await fetch("https://interview-g0pl.onrender.com/generate_feedback", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
