@@ -56,6 +56,7 @@ function page({ params }) {
           
           // Extract rating from feedback
           const ratingMatch = feedback.match(/Rating: (\d)\/5/);
+          console.log("Rating Match:", ratingMatch);
           const rating = ratingMatch ? parseInt(ratingMatch[1]) : "N/A";
   
           // Store feedback in DB

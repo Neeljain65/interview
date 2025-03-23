@@ -13,7 +13,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
-# Load environment variables
 load_dotenv()
 
 app = FastAPI()
@@ -22,22 +21,28 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],  # Frontend URL
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
-# Load and process the PDF
-pdf_path = "interview_questions.pdf.pdf"  # Ensure correct file path
+pdf_path = "interview_questions.pdf.pdf"  
 loader = PyPDFLoader(pdf_path)
 data = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500)
+# text_splitter.transform_documents()
 docs = text_splitter.split_documents(data)
 
+print(docs)
+for doc in docs:
+    doc.page_content = doc.page_content.replace("[1]", "Easy")
+    doc.page_content = doc.page_content.replace("[2]", "Medium")
+    doc.page_content = doc.page_content.replace("[3]", "Hard")
 # Create vectorstore
 vectorstore = Chroma.from_documents(
     documents=docs, 
     embedding=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 )
+print(docs)
 
 retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 10})
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0, max_tokens=200, timeout=None)
@@ -49,37 +54,76 @@ class QueryRequest(BaseModel):
 
 def extract_questions_by_technology(text, technology):
     """Extracts questions only from the specified technology section."""
-    pattern = rf"Technology:\s*{technology}\s*(.+?)(?=\nTechnology:|\Z)"  # Extract section
+    pattern = rf"Technology:\s*{technology}\s*(.+?)(?=\nTechnology:|\Z)"  
     match = re.search(pattern, text, re.DOTALL)
     
     if not match:
         print(f"⚠️ No section found for {technology}, using all available questions.")
-        return extract_questions_from_text(text)  # Fallback to all questions
+        return extract_questions_from_text(text)  
     
-    section_text = match.group(1)  # Get only the relevant tech section
+    section_text = match.group(1)  
     return extract_questions_from_text(section_text)
 
 def extract_questions_from_text(text):
     """Extracts questions from text without difficulty filtering."""
-    pattern = r"(.+?)\s*\[\d\]"  # Matches "question [1]" format
+    pattern = r"(.+?)\s*\[\d\]"  
     matches = re.findall(pattern, text)
 
     return [question.strip() for question in matches]
 
+class QueryRequest(BaseModel):
+    job_role: str
+    technology: str
+    experience:str
+
 @app.post("/get_questions")
 async def get_questions(query: QueryRequest):
-    """Returns 5 interview questions from the PDF, strictly for the given technology."""
+    input_query = f"Interview questions for {query.job_role} related to {query.technology}. My experience is {query.experience}"
     
-    # Use full document (not vector search) to extract questions
-    document_text = " ".join([doc.page_content for doc in docs])  
+    system_prompt = (
+        "You are an assistant that retrieves interview questions from the given document. "
+        "Extract only the most relevant questions for the given job role and technology."
+        "You should recommend questions based on user's experience level so that user feels confident and motivated."
+        "Just provide the questions in a plain list format without mentioning technology, job role, or difficulty."
 
-    # Extract questions for the requested technology
-    all_questions = extract_questions_by_technology(document_text, query.technology)
+        "\n\n"
+        "{context}"
+    )
 
-    # Select any 5 questions (randomly)
-    selected_questions = random.sample(all_questions, min(5, len(all_questions)))  
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", system_prompt),
+        ("human", "{input}"),
+    ])
 
-    return {"questions": selected_questions}
+    question_answer_chain = create_stuff_documents_chain(llm, prompt)
+    rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+
+    response = rag_chain.invoke({"input": input_query})
+
+    # ✅ Ensure `response["answer"]` is processed correctly
+    if isinstance(response["answer"], list):  # If already a list
+        formatted_questions = [{"question": q, "answer": "N/A"} for q in response["answer"]]
+    else:
+        # If response is a string, split into a list
+        questions_list = response["answer"].split("\n")  
+        formatted_questions = [{"question": q.strip(), "answer": "N/A"} for q in questions_list if q.strip()]
+
+    return {"questions": formatted_questions}  
+
+
+# @app.post("/get_questions")
+# async def get_questions(query: QueryRequest):
+#     """Returns 5 interview questions from the PDF, strictly for the given technology."""
+    
+  
+#     document_text = " ".join([doc.page_content for doc in docs])  
+
+#     all_questions = extract_questions_by_technology(document_text, query.technology)
+
+    
+#     selected_questions = random.sample(all_questions, min(5, len(all_questions)))  
+
+#     return {"questions": selected_questions}
 
 class FeedbackRequest(BaseModel):
     question: str
