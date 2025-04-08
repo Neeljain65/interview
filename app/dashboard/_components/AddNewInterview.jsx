@@ -69,8 +69,7 @@ function AddNewInterview() {
         jobDesc,
         jobExperience,
         createdBy: user?.primaryEmailAddress?.emailAddress,
-        createdByName: user?.fullName,
-        createdAt: moment().format("MMMM-Do-YYYY"),
+        createdAt: moment().format('MMMM-Do-YYYY')
       }).returning({ uid: MockInterview.mockId }).execute();
 
       console.log("Stored Interview ID:", resp);

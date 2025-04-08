@@ -2,14 +2,8 @@
   @tailwind components;
   @tailwind utilities;
 
-  
-  
   @layer base {
     :root {
-      --cards: 4;
-      --cardHeight: 87vh;
-      --cardTopPadding: 1.5em;
-      --cardMargin: 4vw;
       --background: 0 0% 100%;
       --foreground: 222.2 84% 4.9%;
 

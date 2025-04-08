@@ -16,7 +16,6 @@ import Header from '../dashboard/_components/Header';
       .from(UserAnswer)
       .innerJoin(MockInterview, eq(UserAnswer.userEmail, MockInterview.createdBy))
       .groupBy(MockInterview.createdBy)
-      .orderBy(sql`AVG(CAST(${UserAnswer.rating} AS NUMERIC)) DESC`)
       .offset(offset)
       .limit(limit)
       .execute();
@@ -91,7 +90,10 @@ import Header from '../dashboard/_components/Header';
             Next
           </button>
         </div>
-        
+        <div className="sticky lg:w-1/2 mx-auto bottom-0 bg-gray-200 p-4 rounded shadow mt-6">
+          <p className="text-lg font-medium">{user.name}</p>
+          <p className="text-sm">Average Rating: {user.avgRating}</p>
+        </div>
         </div>
       </div>
     );
