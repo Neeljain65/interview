@@ -61,13 +61,13 @@ const userID=indata?.mockId;
   //   toast.error('You have already answered this question');
   //   return;
   //  }
-      // const FeedbackPromt = `Question: ${ActiveQuestion}, user Answer: ${Userresults}, Review and just give Feedback give user rating out of 5 and scope of improvement in 3-5 lines in JSON format with rating and scope of improvement. Don’t give **Explanations**.`;
-      // const result = await chatSession.sendMessage(FeedbackPromt);
+      const FeedbackPromt = `Question: ${ActiveQuestion}, user Answer: ${Userresults}, Review and just give Feedback give user rating out of 5 and scope of improvement in 3-5 lines in JSON format with rating and scope of improvement. Don’t give **Explanations**.`;
+      const result = await chatSession.sendMessage(FeedbackPromt);
 
-      // const MockResp = (await result.response.text()).replace('```json', '').replace('```', '');
-      // console.log(MockResp);
+      const MockResp = (await result.response.text()).replace('```json', '').replace('```', '');
+      console.log(MockResp);
 
-      // const jsonMockResp = JSON.parse(MockResp);
+      const jsonMockResp = JSON.parse(MockResp);
       
       const response = await db.insert(UserAnswer).values({
         mockIdRef: indata?.mockId,
@@ -75,8 +75,8 @@ const userID=indata?.mockId;
         question: interviewQuestions[ActiveQuestion]?.question,
         correctAns: interviewQuestions[ActiveQuestion]?.correctAns,
         userAns: Userresults,
-        // feedback: jsonMockResp.scope_of_improvement,
-        // rating: jsonMockResp.rating,
+        feedback: jsonMockResp.scopeOfImprovement,
+        rating: jsonMockResp.rating,
         userEmail: user?.primaryEmailAddress?.emailAddress,
         createdAt: moment().format('MMMM-Do-YYYY')
       }).execute();
