@@ -66,8 +66,7 @@ export default function Home() {
         </div>
       </div>
      <div className="flex flex-col items-center justify-center w-screen p-5">
-     <Link href="https://www.instagram.com/neel_jain__/" className="text-xl font-bold">Neel Jain</Link>
-     <Component />
+     
      </div>
     </div>
   );
